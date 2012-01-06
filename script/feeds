@@ -25,6 +25,7 @@ Feed.all.each do |feed|
                         :description => item.description, 
                         :pub_time => item.pubdate.to_s(:db),
                         :link => item.link,
+                        :image => parsed_feed.channel.image.url,
                         :source => feed)
         end
       end
@@ -46,6 +47,8 @@ Feed.all.each do |feed|
         end
       end
     end
+
+    # remove any previous errors after a successful run
     feed.update_attribute :last_error, nil
   rescue => e
     puts "   !!!! ERROR: #{e.inspect}"

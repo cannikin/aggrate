@@ -19,11 +19,11 @@ ActiveRecord::Schema.define(:version => 20120106190001) do
     t.string   "image"
     t.datetime "pub_time"
     t.string   "guid"
+    t.string   "link"
     t.integer  "source_id"
     t.string   "source_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "link"
   end
 
   add_index "entries", ["guid"], :name => "index_entries_on_guid"
