@@ -9,42 +9,48 @@ require 'open-uri'
 
 Feed.all.each do |feed|
   print feed.title
-  content = open(feed.link).read
-  if content.match(/<rss/)
-    puts " - RSS"
-    parsed_feed = Syndication::RSS::Parser.new.parse(content)
-    parsed_feed.items.each do |item|
-      if Entry.find_by_guid item.guid
-        puts "    Exiting, matched GUID"
-        break
-      else
-        puts "  New entry: #{item.guid}"
-        Entry.create( :guid => item.guid, 
-                      :title => item.title, 
-                      :description => item.description, 
-                      :pub_time => item.pubdate.to_s(:db),
-                      :link => item.link,
-                      :source => feed)
+  begin
+    content = open(feed.link).read
+    if content.match(/<rss/)
+      puts " - RSS"
+      parsed_feed = Syndication::RSS::Parser.new.parse(content)
+      parsed_feed.items.each do |item|
+        if Entry.find_by_guid item.guid
+          puts "    Exiting, matched GUID"
+          break
+        else
+          puts "  New entry: #{item.guid}"
+          Entry.create( :guid => item.guid, 
+                        :title => item.title, 
+                        :description => item.description, 
+                        :pub_time => item.pubdate.to_s(:db),
+                        :link => item.link,
+                        :source => feed)
+        end
+      end
+    elsif content.match(/http:\/\/www.w3.org\/2005\/Atom/)
+      puts " - Atom"
+      parsed_feed = Syndication::Atom::Parser.new.parse(content)
+      parsed_feed.entries.each do |entry|
+        if Entry.find_by_guid entry.id
+          puts "    Exiting, matched GUID"
+          break
+        else
+          puts "  New entry: #{entry.id}"
+          Entry.create( :guid => entry.id, 
+                        :title => entry.title.txt, 
+                        :description => entry.content.xml, 
+                        :pub_time => entry.published.to_s(:db),
+                        :link => entry.links.find { |l| l.type.match(/html/) and l.rel.match(/alternate/) }.href,
+                        :source => feed)
+        end
       end
     end
-  elsif content.match(/http:\/\/www.w3.org\/2005\/Atom/)
-    puts " - Atom"
-    parsed_feed = Syndication::Atom::Parser.new.parse(content)
-    parsed_feed.entries.each do |entry|
-      if Entry.find_by_guid entry.id
-        puts "    Exiting, matched GUID"
-        break
-      else
-        puts "  New entry: #{entry.id}"
-        Entry.create( :guid => entry.id, 
-                      :title => entry.title.txt, 
-                      :description => entry.content.xml, 
-                      :pub_time => entry.published.to_s(:db),
-                      :link => entry.links.find { |l| l.type.match(/html/) and l.rel.match(/alternate/) }.href,
-                      :source => feed)
-      end
-    end
+    feed.update_attribute :last_error, nil
+  rescue => e
+    puts "   !!!! ERROR: #{e.inspect}"
+    feed.update_attribute :last_error, [e, e.backtrace].flatten.join("\n")
   end
-  feed.update_attribute :last_checked_at, Time.now
   
+  feed.update_attribute :last_checked_at, Time.now
 end

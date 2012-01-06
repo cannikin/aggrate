@@ -1,4 +1,4 @@
-%h1 Listing feeds
+%h1 Feeds
 
 %table
   %tr
@@ -8,12 +8,14 @@
     %th
     %th
     %th
+    %th
 
   - @feeds.each do |feed|
     %tr
       %td= feed.title
       %td= feed.link
       %td= time_ago_in_words(feed.last_checked_at) + ' ago'
+      %td= error_note(feed)
       %td= link_to 'Show', feed.link
       %td= link_to 'Edit', edit_feed_path(feed)
       %td= link_to 'Destroy', feed, :confirm => 'Are you sure?', :method => :delete
