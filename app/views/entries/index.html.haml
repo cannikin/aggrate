@@ -1,0 +1,29 @@
+%h1 Listing entries
+
+%table
+  %tr
+    %th Title
+    %th Description
+    %th Image
+    %th Pub time
+    %th Source
+    %th Source type
+    %th
+    %th
+    %th
+
+  - @entries.each do |entry|
+    %tr
+      %td= entry.title
+      %td= entry.description
+      %td= entry.image
+      %td= entry.pub_time
+      %td= entry.source_id
+      %td= entry.source_type
+      %td= link_to 'Show', entry
+      %td= link_to 'Edit', edit_entry_path(entry)
+      %td= link_to 'Destroy', entry, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Entry', new_entry_path

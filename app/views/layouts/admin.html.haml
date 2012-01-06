@@ -1,0 +1,32 @@
+!!! 5
+%html
+  %head
+    %title Aggrate
+    = stylesheet_link_tag    'application', 'admin'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+  %body
+    .topbar-wrapper(style="z-index: 5;")
+      .topbar(data-dropdown="dropdown")
+        .topbar-inner
+          .container
+            %h3= link_to 'Aggrate', root_path
+            %ul.nav
+              %li.active= link_to 'Dashboard', root_path
+              %li.dropdown
+                = link_to 'Sources', '#', :class => "dropdown-toggle"
+                %ul.dropdown-menu
+                  %li= link_to 'Email', '#'
+                  %li= link_to 'Google+', '#'
+                  %li= link_to 'RSS Feeds', feeds_path
+                  %li= link_to 'Twitter', '#'
+
+    .container
+      - if flash[:notice]
+        .alert-message.success
+          = link_to '×', '#', :class => 'close'
+          %p= flash[:notice]
+        :javascript
+          $(".alert-message").alert();
+
+      = yield

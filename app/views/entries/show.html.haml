@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @entry.title
+%p
+  %b Description:
+  = @entry.description
+%p
+  %b Image:
+  = @entry.image
+%p
+  %b Pub time:
+  = @entry.pub_time
+%p
+  %b Source:
+  = @entry.source_id
+%p
+  %b Source type:
+  = @entry.source_type
+
+= link_to 'Edit', edit_entry_path(@entry)
+\|
+= link_to 'Back', entries_path

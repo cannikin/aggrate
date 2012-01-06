@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+puts "Starting..."
+
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
+require 'syndication/rss'
+require 'syndication/atom'
+require 'open-uri'
+
+Feed.all.each do |feed|
+  print feed.title
+  content = open(feed.link).read
+  if content.match(/<rss/)
+    puts " - RSS"
+    parsed_feed = Syndication::RSS::Parser.new.parse(content)
+    parsed_feed.items.each do |item|
+      if Entry.find_by_guid item.guid
+        puts "    Exiting, matched GUID"
+        break
+      else
+        puts "  New entry: #{item.guid}"
+        Entry.create :guid => item.guid, :title => item.title, :description => item.description, :source => feed
+      end
+    end
+  elsif content.match(/http:\/\/www.w3.org\/2005\/Atom/)
+    puts " - Atom"
+    parsed_feed = Syndication::Atom::Parser.new.parse(content)
+    parsed_feed.entries.each do |entry|
+      if Entry.find_by_guid entry.id
+        puts "    Exiting, matched GUID"
+        break
+      else
+        puts "  New entry: #{entry.id}"
+        Entry.create :guid => entry.id, :title => entry.title.txt, :description => entry.content.xml, :source => feed
+      end
+    end
+  end
+  
+end
