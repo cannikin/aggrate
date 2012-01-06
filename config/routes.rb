@@ -5,7 +5,6 @@ Aggrate::Application.routes.draw do
   end
 
   resources :feeds
-  resources :entries
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -6,6 +6,7 @@ class CreateEntries < ActiveRecord::Migration
       t.string    :image
       t.datetime  :pub_time
       t.string    :guid
+      t.string    :link
       t.integer   :source_id
       t.string    :source_type
 
