@@ -1,2 +1,30 @@
-%h1 Home#index
-%p Find me in app/views/home/index.html.haml
+= stylesheet_link_tag 'home'
+
+.row
+  .menu.span4
+    %h3 Blogs
+    %ul.blogs.unstyled
+      - Feed.order(:title).each do |feed| 
+        %li
+          = check_box_tag feed.id, true, true
+          = feed.title
+    %h3 Twitter Accounts
+    %ul.twitter_accounts.unstyled
+      - Tweet.accounts.order(:username).each do |user| 
+        %li
+          = check_box_tag user.id, true, true
+          = user.username
+    %h3 Twitter Searches
+    %ul.twitter_searches.unstyled
+      - Tweet.searches.order(:search_term).each do |search| 
+        %li
+          = check_box_tag search.id, true, true
+          = search.search_term
+    %h3 Email Newsletters
+
+    %h3 Google+ Accounts
+
+  .span12
+    %ul.entries.unstyled
+      - @entries.each do |entry| 
+        = render :partial => 'entry', :locals => { :entry => entry }

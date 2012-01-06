@@ -1,0 +1,8 @@
+%li[entry]
+  .image
+    = image_tag entry.image
+  .text
+    %h2= link_to(entry.title, entry.link) 
+    %h3= link_to(entry.source.title, entry.link)
+    %p= entry.description.html_safe
+    %time(datetime="#{entry.pub_time}")= time_ago_in_words(entry.pub_time) + ' ago'

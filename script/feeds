@@ -7,7 +7,10 @@ require 'syndication/rss'
 require 'syndication/atom'
 require 'open-uri'
 
-Feed.all.each do |feed|
+class Helpers; include ActionView::Helpers::TextHelper; include ActionView::Helpers::SanitizeHelper end
+helpers = Helpers.new
+
+Feed.order('id desc').all.each do |feed|
   print feed.title
   begin
     content = open(feed.link).read
@@ -19,13 +22,17 @@ Feed.all.each do |feed|
           puts "    Exiting, matched GUID"
           break
         else
+          image = parsed_feed.channel.image ? parsed_feed.channel.image.url : nil
+          if image.nil? and description_image = item.description.match(/<img.*?src=['"](.*?)['"]/)
+            image = description_image[1]
+          end
           puts "  New entry: #{item.guid}"
           Entry.create( :guid => item.guid, 
                         :title => item.title, 
                         :description => item.description, 
                         :pub_time => item.pubdate.to_s(:db),
                         :link => item.link,
-                        :image => parsed_feed.channel.image ? parsed_feed.channel.image.url : nil,
+                        :image => image,
                         :source => feed)
         end
       end
@@ -38,12 +45,16 @@ Feed.all.each do |feed|
           break
         else
           puts "  New entry: #{entry.id}"
+          image = parsed_feed.icon
+          if image.nil? and description_image = entry.content.xml.match(/<img.*?src=['"](.*?)['"]/)
+            image = description_image[1]
+          end
           Entry.create( :guid => entry.id, 
                         :title => entry.title.txt, 
-                        :description => entry.content.xml, 
+                        :description => helpers.truncate(helpers.strip_tags(entry.content.xml), :length => 300, :separator => ' '),
                         :pub_time => entry.published.to_s(:db),
                         :link => entry.links.find { |l| l.type.match(/html/) and l.rel.match(/alternate/) }.href,
-                        :image => parsed_feed.icon,
+                        :image => image,
                         :source => feed)
         end
       end
