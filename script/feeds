@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-puts "Starting..."
+puts "Starting feeds..."
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
 require 'syndication/rss'
@@ -25,7 +25,7 @@ Feed.all.each do |feed|
                         :description => item.description, 
                         :pub_time => item.pubdate.to_s(:db),
                         :link => item.link,
-                        :image => parsed_feed.channel.image.url,
+                        :image => parsed_feed.channel.image ? parsed_feed.channel.image.url : nil,
                         :source => feed)
         end
       end
@@ -43,6 +43,7 @@ Feed.all.each do |feed|
                         :description => entry.content.xml, 
                         :pub_time => entry.published.to_s(:db),
                         :link => entry.links.find { |l| l.type.match(/html/) and l.rel.match(/alternate/) }.href,
+                        :image => parsed_feed.icon,
                         :source => feed)
         end
       end
@@ -53,6 +54,7 @@ Feed.all.each do |feed|
   rescue => e
     puts "   !!!! ERROR: #{e.inspect}"
     feed.update_attribute :last_error, [e, e.backtrace].flatten.join("\n")
+    raise e
   end
   
   feed.update_attribute :last_checked_at, Time.now

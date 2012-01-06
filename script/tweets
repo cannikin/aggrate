@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-puts "Starting..."
+puts "Starting tweets..."
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
 
