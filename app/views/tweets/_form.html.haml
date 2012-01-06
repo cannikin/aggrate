@@ -1,0 +1,20 @@
+= form_for @tweet do |f|
+  -if @tweet.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@tweet.errors.count, "error")} prohibited this tweet from being saved:"
+      %ul
+        - @tweet.errors.full_messages.each do |msg|
+          %li= msg
+
+  .clearfix
+    = f.label :username
+    .input= f.text_field :username
+  .clearfix
+    = f.label :search_term
+    .input= f.text_field :search_term
+  .clearfix
+    = f.label :last_checked_at
+    .input= f.datetime_select :last_checked_at
+  .actions
+    = f.submit 'Save', :class => 'btn success'
+    = link_to 'Cancel', tweets_path, :class => 'btn'

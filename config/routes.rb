@@ -1,5 +1,7 @@
 Aggrate::Application.routes.draw do
 
+  resources :tweets
+
   controller :admin do
     get 'admin' => 'admin#index'
   end
