@@ -4,8 +4,8 @@
   %tr
     %th Title
     %th Link
-    %th Last checked at
-    %th
+    %th Homepage
+    %th Last checked
     %th
     %th
     %th
@@ -13,10 +13,10 @@
   - @feeds.each do |feed|
     %tr
       %td= feed.title
-      %td= feed.link
+      %td= link_to feed.link, feed.link
+      %td= link_to feed.homepage, feed.homepage
       %td= time_ago_in_words(feed.last_checked_at) + ' ago'
       %td= error_note(feed)
-      %td= link_to 'Show', feed.link
       %td= link_to 'Edit', edit_feed_path(feed)
       %td= link_to 'Destroy', feed, :confirm => 'Are you sure?', :method => :delete
 

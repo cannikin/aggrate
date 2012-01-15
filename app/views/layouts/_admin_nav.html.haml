@@ -1,0 +1,18 @@
+.topbar-wrapper(style="z-index: 5;")
+  .topbar(data-dropdown="dropdown")
+    .topbar-inner
+      .container
+        %h3= link_to 'Aggrate', root_path
+        %ul.nav
+          %li= link_to 'Dashboard', admin_path
+          %li= link_to 'Users', users_path
+          %li.dropdown
+            = link_to 'Sources', '#', :class => "dropdown-toggle"
+            %ul.dropdown-menu
+              %li= link_to 'Email', '#'
+              %li= link_to 'Google+', '#'
+              %li= link_to 'RSS Feeds', feeds_path
+              %li= link_to 'Twitter', tweets_path
+        %ul.nav.secondary-nav
+          %li= link_to 'Logout', logout_path
+

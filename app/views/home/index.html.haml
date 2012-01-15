@@ -6,23 +6,23 @@
     %ul.blogs.unstyled
       - Feed.order(:title).each do |feed| 
         %li
-          = check_box_tag feed.id, true, true
-          = feed.title
+          = check_box_tag feed_check_box_name(feed), true, true
+          = link_to feed.title, feed.homepage
     %h3 Twitter Accounts
     %ul.twitter_accounts.unstyled
       - Tweet.accounts.order(:username).each do |user| 
         %li
-          = check_box_tag user.id, true, true
-          = user.username
+          = check_box_tag feed_check_box_name(user), true, true
+          = link_to user.username, twitter_user_url(user.username)
     %h3 Twitter Searches
     %ul.twitter_searches.unstyled
       - Tweet.searches.order(:search_term).each do |search| 
         %li
-          = check_box_tag search.id, true, true
-          = search.search_term
-    %h3 Email Newsletters
-
-    %h3 Google+ Accounts
+          = check_box_tag feed_check_box_name(search), true, true
+          = link_to search.search_term, twitter_search_url(search.search_term)
+    /
+      %h3 Email Newsletters
+      %h3 Google+ Accounts
 
   .span12
     %ul.entries.unstyled

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120106190001) do
+ActiveRecord::Schema.define(:version => 20120115185639) do
 
   create_table "entries", :force => true do |t|
     t.string   "title"
@@ -19,11 +19,11 @@ ActiveRecord::Schema.define(:version => 20120106190001) do
     t.string   "image"
     t.datetime "pub_time"
     t.string   "guid"
-    t.string   "link"
     t.integer  "source_id"
     t.string   "source_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "link"
   end
 
   add_index "entries", ["guid"], :name => "index_entries_on_guid"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20120106190001) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "last_error"
+    t.string   "homepage"
   end
 
   create_table "tweets", :force => true do |t|
@@ -45,6 +46,13 @@ ActiveRecord::Schema.define(:version => 20120106190001) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "last_error"
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "username"
+    t.string   "password"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

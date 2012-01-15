@@ -4,8 +4,7 @@
   %tr
     %th Username
     %th Search term
-    %th Last checked at
-    %th
+    %th Last checked
     %th
     %th
     %th
@@ -16,7 +15,6 @@
       %td= tweet.search_term
       %td= tweet.last_checked_at
       %td= error_note(tweet)
-      %td= link_to 'Show', tweet
       %td= link_to 'Edit', edit_tweet_path(tweet)
       %td= link_to 'Destroy', tweet, :confirm => 'Are you sure?', :method => :delete
 

@@ -8,6 +8,7 @@ gem 'sass'
 gem 'mailman'
 gem 'syndication'
 gem 'twitter'
+gem 'rinku'
 
 # Gems used only for assets and not required
 # in production environments by default.

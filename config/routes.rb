@@ -1,9 +1,17 @@
 Aggrate::Application.routes.draw do
 
+  resources :users
+
   resources :tweets
 
   controller :admin do
-    get 'admin' => 'admin#index'
+    get 'admin' => 'admin#index', :as => :admin
+  end
+
+  controller :session do
+    get   'login'     => :new,      :as => :login
+    post  'login/go'  => :create,   :as => :login_go
+    get   'logout'    => :destroy,  :as => :logout
   end
 
   resources :feeds

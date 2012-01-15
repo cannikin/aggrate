@@ -6,6 +6,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'envi
 
 def create_entry(status, tweet)
   Entry.create( :guid => status[:id], 
+                :title => '@' + status[:screen_name], 
                 :description => status[:text], 
                 :pub_time => status[:created_at].to_s(:db),
                 :link => "https://twitter.com/#!/#{status[:screen_name]}/status/#{status[:id]}",

@@ -1,8 +1,14 @@
-%li[entry]
+%li[entry](data-source-id="#{entry.source_id}" data-source-type="#{entry.source_type.downcase}")
   .image
     = image_tag entry.image
   .text
-    %h2= link_to(entry.title, entry.link) 
-    %h3= link_to(entry.source.title, entry.link)
-    %p= entry.description.html_safe
+    %h2
+      %strong= link_to(entry.title, entry.link) 
+      via
+      - case entry.source
+      - when Feed
+        = link_to(entry.source.title, entry.source.homepage)
+      - when Tweet
+        = link_to('Twitter', twitter_user_url(entry.title))
+    %p= auto_link(entry.description).html_safe
     %time(datetime="#{entry.pub_time}")= time_ago_in_words(entry.pub_time) + ' ago'

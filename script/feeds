@@ -29,7 +29,7 @@ Feed.order('id desc').all.each do |feed|
           puts "  New entry: #{item.guid}"
           Entry.create( :guid => item.guid, 
                         :title => item.title, 
-                        :description => item.description, 
+                        :description => helpers.truncate(helpers.strip_tags(item.description), :length => 300, :separator => ' '), 
                         :pub_time => item.pubdate.to_s(:db),
                         :link => item.link,
                         :image => image,

@@ -12,9 +12,6 @@
   .clearfix
     = f.label :search_term
     .input= f.text_field :search_term
-  .clearfix
-    = f.label :last_checked_at
-    .input= f.datetime_select :last_checked_at
   .actions
     = f.submit 'Save', :class => 'btn success'
     = link_to 'Cancel', tweets_path, :class => 'btn'

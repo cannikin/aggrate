@@ -6,8 +6,19 @@
     = javascript_include_tag "application"
     = csrf_meta_tags
   %body
+    - if logged_in?
+      = render 'layouts/admin_nav'
+      
     .container
       .hero-unit
-        %h1 Woodworking
+        %h1 Feeds for Woodworkers
         %p Pulling together the latest in woodworking blogs, tweets, newsletters and more...
       = yield
+
+    %footer.footer
+      .container
+        %p 
+          Part of the 
+          %strong= link_to 'For Woodworkers Network', 'http://forwoodworkers.com'
+          &copy;#{Time.now.year}. Another awesome site brought to you by 
+          %strong= link_to 'Rob Cameron', 'http://ridingtheclutch.com'

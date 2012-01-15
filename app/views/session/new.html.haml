@@ -1,0 +1,10 @@
+= form_for User.new, :url => login_go_path do |f|
+  .clearfix
+    = f.label :username
+    .input= f.text_field :username
+  .clearfix
+    = f.label :password
+    .input= f.password_field :password
+  .actions
+    = f.submit 'Login', :class => 'btn success'
+

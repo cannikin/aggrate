@@ -13,8 +13,8 @@
     = f.label :title
     .input= f.text_field :title
   .clearfix
-    = f.label :last_checked_at
-    .input= f.datetime_select :last_checked_at
+    = f.label :homepage
+    .input= f.text_field :homepage
   .actions
     = f.submit 'Save', :class => 'btn success'
     = link_to 'Cancel', feeds_path, :class => 'btn'
