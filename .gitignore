@@ -16,3 +16,6 @@
 
 # Ignore config files
 config/plus.yml
+
+# Ignore assets
+public/assets
