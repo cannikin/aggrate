@@ -1,6 +1,6 @@
 %li[entry](data-source-id="#{entry.source_id}" data-source-type="#{entry.source_type.downcase}")
   .image
-    = image_tag entry.image
+    = image_tag entry.image if entry.image.present?
   .text
     %h2
       %strong= link_to(entry.title, entry.link) 
