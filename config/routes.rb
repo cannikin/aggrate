@@ -4,6 +4,10 @@ Aggrate::Application.routes.draw do
 
   resources :tweets
 
+  controller :home do
+    get 'index' => :index
+  end
+
   controller :admin do
     get 'admin' => 'admin#index', :as => :admin
   end
