@@ -12,7 +12,7 @@
 
   - @feeds.each do |feed|
     %tr
-      %td= feed.title
+      %td= link_to feed.title, feed.homepage
       %td= link_to feed.link, feed.link
       %td= link_to feed.homepage, feed.homepage
       %td= time_ago_in_words(feed.last_checked_at) + ' ago'
