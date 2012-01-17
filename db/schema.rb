@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120115185639) do
+ActiveRecord::Schema.define(:version => 20120117060201) do
 
   create_table "entries", :force => true do |t|
     t.string   "title"
@@ -37,6 +37,16 @@ ActiveRecord::Schema.define(:version => 20120115185639) do
     t.datetime "updated_at"
     t.text     "last_error"
     t.string   "homepage"
+  end
+
+  create_table "google_posts", :force => true do |t|
+    t.string   "user_id"
+    t.string   "search_term"
+    t.datetime "last_checked_at"
+    t.text     "last_error"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "username"
   end
 
   create_table "tweets", :force => true do |t|

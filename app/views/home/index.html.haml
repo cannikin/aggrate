@@ -20,9 +20,23 @@
         %li
           = check_box_tag feed_check_box_name(search), true, true
           = link_to search.search_term, twitter_search_url(search.search_term)
-    /
-      %h3 Email Newsletters
-      %h3 Google+ Accounts
+      /%h3 Email Newsletters
+    %h3 Google+ Accounts
+    %ul.google_accounts.unstyled
+      - GooglePost.accounts.order(:user_id).each do |user| 
+        %li
+          = check_box_tag feed_check_box_name(user), true, true
+          = link_to user.username, google_user_url(user.user_id)
+
+    %h3 Google+ Searches
+    %ul.google_searches.unstyled
+      - GooglePost.searches.order(:search_term).each do |search| 
+        %li
+          = check_box_tag feed_check_box_name(search), true, true
+          = link_to search.search_term, google_search_url(search.search_term)
+
+    = link_to(image_tag('feed.png'), index_path(:format => :rss))
+    = link_to 'Get Your Custom Feed', index_path(:format => :rss)
 
   .span12
     %ul.entries.unstyled

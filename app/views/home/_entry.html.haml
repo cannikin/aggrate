@@ -10,5 +10,7 @@
         = link_to(entry.source.title, entry.source.homepage)
       - when Tweet
         = link_to('Twitter', twitter_user_url(entry.title))
-    %p= auto_link(entry.description).html_safe
+      - when GooglePost
+        = link_to('Google+', entry.link.split('posts').first)
+    %p= auto_link(entry.description, entry.source).html_safe
     %time(datetime="#{entry.pub_time}")= time_ago_in_words(entry.pub_time) + ' ago'

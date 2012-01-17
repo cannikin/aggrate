@@ -15,6 +15,7 @@ def create_entry(status, tweet)
 end
 
 Tweet.all.each do |tweet|
+  puts tweet.username + tweet.search_term
   begin
 
     if tweet.username.present?

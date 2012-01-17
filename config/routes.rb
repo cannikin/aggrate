@@ -1,5 +1,7 @@
 Aggrate::Application.routes.draw do
 
+  resources :google_posts
+
   resources :users
 
   resources :tweets

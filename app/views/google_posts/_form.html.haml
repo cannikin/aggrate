@@ -1,0 +1,20 @@
+= form_for @google_post do |f|
+  -if @google_post.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@google_post.errors.count, "error")} prohibited this google_post from being saved:"
+      %ul
+        - @google_post.errors.full_messages.each do |msg|
+          %li= msg
+
+  .clearfix
+    = f.label :user_id
+    .input= f.text_field :user_id
+  .clearfix
+    = f.label :username
+    .input= f.text_field :username
+  .clearfix
+    = f.label :search_term
+    .input= f.text_field :search_term
+  .actions
+    = f.submit 'Save', :class => 'btn success'
+    = link_to 'Cancel', google_posts_path, :class => 'btn'

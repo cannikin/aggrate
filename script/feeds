@@ -11,7 +11,7 @@ class Helpers; include ActionView::Helpers::TextHelper; include ActionView::Help
 helpers = Helpers.new
 
 Feed.order('id desc').all.each do |feed|
-  print feed.title
+  puts feed.title
   begin
     content = open(feed.link).read
     if content.match(/<rss/)

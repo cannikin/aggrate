@@ -1,0 +1,25 @@
+%h1 Google+ Searches
+
+%table
+  %tr
+    %th User ID
+    %th Username
+    %th Search term
+    %th Last checked at
+    %th 
+    %th
+    %th
+
+  - @google_posts.each do |google_post|
+    %tr
+      %td= google_post.user_id
+      %td= google_post.username
+      %td= google_post.search_term
+      %td= google_post.last_checked_at
+      %td= error_note(google_post)
+      %td= link_to 'Edit', edit_google_post_path(google_post)
+      %td= link_to 'Destroy', google_post, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Google+ Search', new_google_post_path, :class => 'btn success'
