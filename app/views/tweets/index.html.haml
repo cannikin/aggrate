@@ -13,7 +13,7 @@
     %tr
       %td= tweet.username
       %td= tweet.search_term
-      %td= time_ago_in_words(tweet.last_checked_at) + ' ago'
+      %td= time_ago_in_words(tweet.last_checked_at) + ' ago' if tweet.last_checked_at
       %td= error_note(tweet)
       %td= link_to 'Edit', edit_tweet_path(tweet)
       %td= link_to 'Destroy', tweet, :confirm => 'Are you sure?', :method => :delete

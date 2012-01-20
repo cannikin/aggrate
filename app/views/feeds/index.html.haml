@@ -15,7 +15,7 @@
       %td= link_to feed.title, feed.homepage
       %td= link_to feed.link, feed.link
       %td= link_to feed.homepage, feed.homepage
-      %td= time_ago_in_words(feed.last_checked_at) + ' ago'
+      %td= time_ago_in_words(feed.last_checked_at) + ' ago' if feed.last_checked_at
       %td= error_note(feed)
       %td= link_to 'Edit', edit_feed_path(feed)
       %td= link_to 'Destroy', feed, :confirm => 'Are you sure?', :method => :delete
