@@ -1,10 +1,13 @@
 !!! 5
 %html
   %head
-    %title Aggrate
+    %title Feeds for Woodworkers
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
+    %meta(name="description" content="Pulling together the latest in woodworking blogs, tweets, google+, email newsletters and more...")
+    %meta(name="keywords" content="woodworking,rss,feeds,aggregate,blogs,twitter,google+,email,newsletters")
+
   %body
     - if logged_in?
       = render 'layouts/admin_nav'
