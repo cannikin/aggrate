@@ -4,7 +4,7 @@ module ApplicationHelper
     output = text
     case source
     when Tweet
-      output.gsub!(/([^&])#(\w*)(\W|$)/, "\\1<a href=\"https://twitter.com/#!/search?q=%23\\2\">#\\2</a>\\3")
+      output.gsub!(/([^&]?)#(\w*)(\W|$)/, "\\1<a href=\"https://twitter.com/#!/search?q=%23\\2\">#\\2</a>\\3")
       output.gsub!(/@(\w*)(\W|$)/, "<a href=\"https://twitter.com/#!/\\1\">@\\1</a>\\2")
     end
     output = Rinku.auto_link(output)
