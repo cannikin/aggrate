@@ -65,7 +65,6 @@ Feed.order('id desc').all.each do |feed|
   rescue => e
     puts "   !!!! ERROR: #{e.inspect}"
     feed.update_attribute :last_error, [e, e.backtrace].flatten.join("\n")
-    raise e
   end
   
   feed.update_attribute :last_checked_at, Time.now
