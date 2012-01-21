@@ -12,9 +12,9 @@
 
   - @feeds.each do |feed|
     %tr
-      %td= link_to feed.title, feed.homepage
-      %td= link_to feed.link, feed.link
-      %td= link_to feed.homepage, feed.homepage
+      %td= link_to truncate(feed.title, :length => 40), feed.homepage
+      %td= link_to truncate(feed.link, :length => 40), feed.link
+      %td= link_to truncate(feed.homepage, :length => 40), feed.homepage
       %td= time_ago_in_words(feed.last_checked_at) + ' ago' if feed.last_checked_at
       %td= error_note(feed)
       %td= link_to 'Edit', edit_feed_path(feed)
