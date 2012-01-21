@@ -7,7 +7,16 @@ xml.rss :version => "2.0" do
 
     @entries.each do |entry|
       xml.item do
-        xml.title       entry.title
+        via = nil
+        case entry.source
+        when Tweet
+          via = 'Twitter'
+        when GooglePost
+          via = 'Google+'
+        when Feed
+          via = entry.source.title
+        end
+        xml.title       entry.title + ' via ' + via
         xml.link        entry.link
         xml.description entry.description
         xml.guid        entry.guid
