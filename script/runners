@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
+require Rails.root.join('lib','runners','feeds')
+require Rails.root.join('lib','runners','tweets')
+require Rails.root.join('lib','runners','google_posts')
+require 'forever'
+
+Forever.run do
+
+  on_exit do
+    puts "...stopping runners at #{Time.now}"
+  end
+
+  every 10.minutes do
+    Aggrate::Runners::Feeds.run
+    Aggrate::Runners::Tweets.run
+    Aggrate::Runners::GooglePosts.run
+  end
+end
