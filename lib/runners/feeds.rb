@@ -1,7 +1,7 @@
 require 'syndication/rss'
 require 'syndication/atom'
 require 'open-uri'
-require Rails.root.join('lib','runners','helpers')
+require File.join(File.expand_path(File.dirname(__FILE__)),'helpers')
 
 module Aggrate
   module Runners
@@ -10,7 +10,7 @@ module Aggrate
       def self.run
         puts "Starting feeds at #{Time.now}..."
 
-        helpers = Helpers.new
+        @helpers ||= Aggrate::Runners::Helpers.new
 
         Feed.order('id desc').all.each do |feed|
           puts feed.title
@@ -29,13 +29,15 @@ module Aggrate
                     image = description_image[1]
                   end
                   puts "  New entry: #{item.guid}"
-                  Entry.create( :guid => item.guid, 
-                                :title => item.title, 
-                                :description => helpers.truncate(helpers.strip_tags(item.description), :length => 300, :separator => ' '), 
-                                :pub_time => item.pubdate.to_s(:db),
-                                :link => item.link,
-                                :image => image,
-                                :source => feed)
+                  data = {  :guid => item.guid, 
+                            :title => item.title, 
+                            :description => item.description, 
+                            :pub_time => item.pubdate,
+                            :link => item.link,
+                            :image => image,
+                            :source => feed }
+
+                  create_entry(data)
                 end
               end
             elsif content.match(/http:\/\/www.w3.org\/2005\/Atom/)
@@ -47,17 +49,32 @@ module Aggrate
                   break
                 else
                   puts "  New entry: #{entry.id}"
+
                   image = parsed_feed.icon
-                  if image.nil? and description_image = entry.content.xml.match(/<img.*?src=['"](.*?)['"]/)
+                  if image.nil? and entry.content.try(:xml) and description_image = entry.content.xml.match(/<img.*?src=['"](.*?)['"]/)
                     image = description_image[1]
+                  elsif entry.author and matched_image = content.match(/<gd:image.*?src=['"](.*?)['"]/)
+                    image = matched_image[1]
                   end
-                  Entry.create( :guid => entry.id, 
-                                :title => entry.title.txt, 
-                                :description => helpers.truncate(helpers.strip_tags(entry.content.xml), :length => 300, :separator => ' '),
-                                :pub_time => entry.published.to_s(:db),
-                                :link => entry.links.find { |l| l.type.match(/html/) and l.rel.match(/alternate/) }.href,
-                                :image => image,
-                                :source => feed)
+
+                  description = nil
+                  if entry.content
+                    description = entry.content.txt
+                  elsif entry.summary
+                    description = entry.summary.txt
+                  end
+
+                  data = {
+                    :guid => entry.id, 
+                    :title => entry.title.txt, 
+                    :description => description,
+                    :pub_time => entry.published,
+                    :link => entry.links.find { |l| l.type.match(/html/) and l.rel.match(/alternate/) }.href,
+                    :image => image,
+                    :source => feed }
+
+                  create_entry(data)
+                  
                 end
               end
             end
@@ -73,6 +90,16 @@ module Aggrate
         end
 
       end # self.run
+
+      def self.create_entry(data)
+        Entry.create( :guid => data[:guid], 
+                      :title => data[:title], 
+                      :description => @helpers.truncate(@helpers.strip_tags(data[:description]), :length => 300, :separator => ' '),
+                      :pub_time => data[:pub_time].to_s(:db),
+                      :link => data[:links],
+                      :image => data[:image],
+                      :source => data[:source])
+      end
 
     end   # class
   end     # module
