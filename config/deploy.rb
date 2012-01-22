@@ -42,10 +42,12 @@ namespace :deploy do
     end
   end
   
-  desc 'Symlinks shared directores to release path'
-  task :symlink_shared_dirs, :roles => :app do
-    symlink_database_yml
-    symlink_aws_yml
+  desc 'Create symlinks to YAML config files in shared directory'
+  task :symlink_ymls, :roles => :app do
+    files = capture("cd #{shared_path} && ls config/*.yml").split
+    files.each do |file|
+      run "ln -nsf #{File.join(shared_path, file)} #{release_path}/#{file}"
+    end
   end
   
   desc 'Create symlink to database.yml in shared directory'
@@ -78,6 +80,24 @@ namespace :deploy do
     run "kill -USR2 `cat #{current_path}/tmp/pids/unicorn.pid`"
   end
   
+end
+
+
+namespace :runners do
+
+  desc 'Start runners'
+  task :start, :roles => :app do
+    run "cd #{current_path} && echo 'y' | bundle exec foreverb start runners"
+  end
+
+  task :stop, :roles => :app do
+    run "cd #{current_path} && echo 'y' | bundle exec foreverb stop runners"
+  end
+
+  task :restart, :roles => :app do
+    run "cd #{current_path} && echo 'y' | bundle exec foreverb restart runners"
+  end
+
 end
 
 
@@ -130,11 +150,13 @@ end
 
 # symlink database and aws files after a deploy
 after 'deploy:setup', 'deploy:config_setup'
-after 'deploy:update_code', 'deploy:symlink_shared_dirs'
+after 'deploy:update_code', 'deploy:symlink_ymls'
 
 # cleanup old releases (keep the last 5)
 after 'deploy', 'deploy:cleanup'
+after 'deploy', 'runners:restart'
 after 'deploy:migrations', 'deploy:cleanup'
+after 'deploy:migrations', 'runners:restart'
 
 after 'deploy:update_code', 'deploy:create_assets'
 
