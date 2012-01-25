@@ -17,6 +17,7 @@
 # Ignore config files
 config/plus.yml
 config/database.yml
+config/newrelic.yml
 
 # Ignore assets
 public/assets
